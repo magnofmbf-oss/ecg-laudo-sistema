@@ -13,15 +13,26 @@ const MeasureField = ({
   setQuadrados 
 }) => (
   <div className="measure-field">
-    <label>{label}</label>
+    <label>
+      {label}
+      {onCalculate && (
+        <button 
+          className={`calc-toggle-label ${calculationMode ? 'active' : ''}`}
+          onClick={() => setCalculationMode(!calculationMode)}
+          title={calculationMode ? "Inserir valor direto" : "Calcular por quadrados"}
+        >
+          □
+        </button>
+      )}
+    </label>
     <div className="measure-input-group">
-      {calculationMode ?  (
+      {calculationMode ? (
         <>
           <input
             type="number"
             value={quadrados}
             onChange={(e) => {
-              setQuadrados(e.target. value);
+              setQuadrados(e.target.value);
               if (onCalculate && e.target.value) {
                 onCalculate(e.target.value);
               }
@@ -30,13 +41,6 @@ const MeasureField = ({
             className="quadrados-input"
           />
           <span className="unit-label">□</span>
-          <button 
-            className="calc-toggle active"
-            onClick={() => setCalculationMode(false)}
-            title="Inserir valor direto"
-          >
-            ⇄
-          </button>
         </>
       ) : (
         <>
@@ -48,15 +52,6 @@ const MeasureField = ({
             className={calculated ? "calculated" : ""}
           />
           <span className="unit-label">{unit}</span>
-          {onCalculate && (
-            <button 
-              className="calc-toggle"
-              onClick={() => setCalculationMode(true)}
-              title="Calcular por quadrados"
-            >
-              □
-            </button>
-          )}
         </>
       )}
     </div>

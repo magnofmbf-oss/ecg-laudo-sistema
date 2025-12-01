@@ -10,9 +10,9 @@ const DadosMedico = ({ dados, setDados }) => (
     <div className="form-grid">
       <InputField
         label="Nome"
-        value={dados. nome}
+        value={dados.nome}
         onChange={(v) => setDados({ ...dados, nome: v })}
-        placeholder="Dr(a).  Nome completo"
+        placeholder="Dr(a). Nome completo"
         className="span-2"
       />
       <InputField
@@ -29,7 +29,7 @@ const DadosMedico = ({ dados, setDados }) => (
       />
       <InputField
         label="RQE"
-        value={dados. rqe}
+        value={dados.rqe}
         onChange={(v) => setDados({ ... dados, rqe: v })}
         placeholder="00000"
       />

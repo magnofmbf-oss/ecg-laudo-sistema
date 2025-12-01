@@ -18,7 +18,7 @@ const App = () => {
   const [dadosMedico, setDadosMedico] = useState({
     nome: 'Dr. Magno Fernandes Mendes Borges Filho',
     especialidade: 'Médico Cardiologista',
-    crm: 'CRM MG 69040',
+    crm: 'CRM MG 59040',
     rqe: 'RQE 42417'
   });
 
@@ -38,7 +38,7 @@ const App = () => {
   const [exportando, setExportando] = useState(false);
 
   const validarFormulario = () => {
-    if (!dadosPaciente.nome. trim()) {
+    if (!dadosPaciente.nome.trim()) {
       alert('O nome do paciente é obrigatório.');
       return false;
     }

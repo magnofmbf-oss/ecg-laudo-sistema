@@ -12,7 +12,7 @@ const DadosPaciente = ({ dados, setDados }) => {
       <div className="form-grid">
         <InputField
           label="Nome completo"
-          value={dados. nome}
+          value={dados.nome}
           onChange={(v) => setDados({ ...dados, nome: v })}
           placeholder="Nome do paciente"
           required
@@ -30,9 +30,11 @@ const DadosPaciente = ({ dados, setDados }) => {
             type="date"
             value={dados.dataNascimento}
             onChange={(e) => {
-              const idade = calcularIdade(e. target.value);
-              setDados({ ...dados, dataNascimento: e.target.value, idade: idade. toString() });
-            }}
+              const idade = calcularIdade(e.target.value);
+
+  
+  setDados({ ...dados, dataNascimento: e.target.value, idade: idade.toString() });
+}}
           />
         </div>
         <div className="input-field idade-field">

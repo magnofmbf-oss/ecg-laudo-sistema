@@ -1,17 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 const UploadImagem = ({ imagem, setImagem }) => {
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    if (file && file.size > 10 * 1024 * 1024) {
+      // 10MB
+      alert("Arquivo muito grande. Máximo 10MB.");
+      return;
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagem({
           file,
           preview: reader.result,
-          type: file.type
+          type: file.type,
         });
       };
       reader.readAsDataURL(file);
@@ -20,14 +25,14 @@ const UploadImagem = ({ imagem, setImagem }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const file = e.dataTransfer. files[0];
+    const file = e.dataTransfer.files[0];
     if (file) {
       const reader = new FileReader();
-      reader. onloadend = () => {
+      reader.onloadend = () => {
         setImagem({
           file,
           preview: reader.result,
-          type: file.type
+          type: file.type,
         });
       };
       reader.readAsDataURL(file);
@@ -40,16 +45,16 @@ const UploadImagem = ({ imagem, setImagem }) => {
         <span className="icon">🖼️</span>
         Imagem do ECG
       </h2>
-      
-      <div 
-        className={`upload-area ${imagem ?  'has-image' : ''}`}
-        onClick={() => ! imagem && fileInputRef.current?.click()}
+
+      <div
+        className={`upload-area ${imagem ? "has-image" : ""}`}
+        onClick={() => !imagem && fileInputRef.current?.click()}
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
-        {imagem ?  (
+        {imagem ? (
           <div className="preview-container">
-            {imagem.type === 'application/pdf' ? (
+            {imagem.type === "application/pdf" ? (
               <div className="pdf-preview">
                 <span className="pdf-icon">📄</span>
                 <span>{imagem.file.name}</span>
@@ -57,10 +62,10 @@ const UploadImagem = ({ imagem, setImagem }) => {
             ) : (
               <img src={imagem.preview} alt="Preview do ECG" />
             )}
-            <button 
+            <button
               className="btn-remover-imagem"
               onClick={(e) => {
-                e. stopPropagation();
+                e.stopPropagation();
                 setImagem(null);
               }}
             >
@@ -75,13 +80,13 @@ const UploadImagem = ({ imagem, setImagem }) => {
           </div>
         )}
       </div>
-      
+
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf,.jpg,.jpeg,.png,.bmp,. gif"
+        accept=".pdf,.jpg,.jpeg,.png,.bmp,.gif"
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
     </section>
   );
