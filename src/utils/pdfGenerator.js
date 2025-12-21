@@ -148,7 +148,44 @@ export const gerarPDF = async (
   pdf.setTextColor(100, 100, 100);
   pdf.text(dataAtual, pageWidth - margin, y, { align: "right" });
 
-  // ===== ASSINATURA =====
+  // ===== ASSINATURA COM RUBRICA =====
+  y += 10;
+
+  // Configurações da imagem da rubrica
+  const rubricaWidth = 60; // Largura da imagem da rubrica em mm
+  const rubricaHeight = 25; // Altura da imagem da rubrica em mm
+  const rubricaX = (pageWidth - rubricaWidth) / 2; // Centralizada
+  const rubricaY = y - 5; // Posição Y (atrás dos outros elementos)
+
+  // Adicionar imagem da rubrica (atrás dos textos)
+  try {
+    // Carrega a imagem da rubrica de forma assíncrona
+    await new Promise((resolve, reject) => {
+      const rubricaImg = new Image();
+      rubricaImg.crossOrigin = "anonymous";
+      rubricaImg.onload = () => {
+        // Adiciona a rubrica centralizada atrás dos textos
+        pdf.addImage(
+          rubricaImg,
+          "PNG",
+          rubricaX,
+          rubricaY,
+          rubricaWidth,
+          rubricaHeight
+        );
+        resolve();
+      };
+      rubricaImg.onerror = () => {
+        console.warn("Imagem da rubrica não encontrada");
+        resolve(); // Continua mesmo sem a imagem
+      };
+      rubricaImg.src = "/assinatura_magno.png";
+    });
+  } catch (error) {
+    console.warn("Erro ao carregar imagem da rubrica:", error);
+  }
+
+  // Linha da assinatura (por cima da rubrica)
   y += 15;
   pdf.setDrawColor(30, 58, 95);
   pdf.setLineWidth(0.3);

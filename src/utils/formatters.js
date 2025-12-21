@@ -11,16 +11,28 @@ export const calcularIdade = (dataNasc) => {
 };
 
 export const formatarCPF = (cpf) => {
-  const numeros = cpf.replace(/\D/g, '');
+  const numeros = cpf.replace(/\D/g, "");
   if (numeros.length <= 3) return numeros;
   if (numeros.length <= 6) return `${numeros.slice(0, 3)}.${numeros.slice(3)}`;
-  if (numeros.length <= 9) return `${numeros.slice(0, 3)}.${numeros.slice(3, 6)}.${numeros.slice(6)}`;
-  return `${numeros.slice(0, 3)}. ${numeros.slice(3, 6)}.${numeros.slice(6, 9)}-${numeros.slice(9, 11)}`;
+  if (numeros.length <= 9)
+    return `${numeros.slice(0, 3)}.${numeros.slice(3, 6)}.${numeros.slice(6)}`;
+  return `${numeros.slice(0, 3)}. ${numeros.slice(3, 6)}.${numeros.slice(
+    6,
+    9
+  )}-${numeros.slice(9, 11)}`;
 };
 
 export const calcularFC = (quadrados) => {
   if (quadrados && parseFloat(quadrados) > 0) {
     return Math.round(1500 / parseFloat(quadrados));
+  }
+  return null;
+};
+
+// Conversão reversa: FC -> quadrados
+export const calcularQuadradosFC = (fc) => {
+  if (fc && parseFloat(fc) > 0) {
+    return Math.round((1500 / parseFloat(fc)) * 10) / 10; // 1 casa decimal
   }
   return null;
 };
@@ -32,6 +44,14 @@ export const calcularIntervalo = (quadrados) => {
   return null;
 };
 
+// Conversão reversa: ms -> quadrados
+export const calcularQuadradosIntervalo = (ms) => {
+  if (ms && parseFloat(ms) > 0) {
+    return Math.round((parseFloat(ms) / 40) * 10) / 10; // 1 casa decimal
+  }
+  return null;
+};
+
 export const calcularQTc = (qt, fc) => {
   if (qt && fc && parseFloat(fc) > 0) {
     const qtSeg = parseFloat(qt) / 1000;
@@ -39,14 +59,14 @@ export const calcularQTc = (qt, fc) => {
     const qtc = Math.round((qtSeg / Math.sqrt(rrSeg)) * 1000);
     return qtc.toString();
   }
-  return '';
+  return "";
 };
 
 export const calcularEixo = (d1, avf) => {
   if (d1 && avf) {
     const d1Num = parseFloat(d1);
     const avfNum = parseFloat(avf);
-    
+
     if (!isNaN(d1Num) && !isNaN(avfNum)) {
       // Fórmula: ATAN2(D1, aVF) convertido para graus
       const radianos = Math.atan2(avfNum, d1Num);
@@ -54,5 +74,5 @@ export const calcularEixo = (d1, avf) => {
       return graus.toString();
     }
   }
-  return '';
+  return "";
 };

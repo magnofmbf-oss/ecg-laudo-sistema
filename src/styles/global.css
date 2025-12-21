@@ -167,12 +167,6 @@ body {
 }
 
 /* ===== MEDIDAS ECG ===== */
-.measures-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 16px;
-}
 
 .measure-field {
   display: flex;
@@ -284,6 +278,98 @@ body {
   background: var(--primary);
   color: white;
   border-color: var(--primary);
+}
+
+/* ===== DUAL MEASURE FIELD (Campos Duplos) ===== */
+.dual-measure {
+  min-width: 0;
+}
+
+.dual-input-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dual-input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.dual-input-group input {
+  width: 100%;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  padding: 8px 28px 8px 8px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #1e293b;
+  text-align: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+  min-width: 0;
+}
+
+.dual-input-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.dual-input-group input.quadrados-input {
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
+.dual-input-group input.quadrados-input:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.dual-input-group .unit-label {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.dual-arrow {
+  color: #94a3b8;
+  font-size: 12px;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+/* Ajuste do grid para caber campos duplos */
+.measures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .measures-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dual-input-container {
+    gap: 4px;
+  }
+
+  .dual-input-group input {
+    padding: 8px 24px 8px 6px;
+    font-size: 13px;
+  }
 }
 
 .measure-input-group:has(.calc-toggle) input {

@@ -1,40 +1,23 @@
 import React, { useState, useEffect } from "react";
-import MeasureField from "./shared/MeasureField";
+import DualMeasureField from "./shared/DualMeasureField";
 import {
   calcularFC,
+  calcularQuadradosFC,
   calcularIntervalo,
+  calcularQuadradosIntervalo,
   calcularQTc,
   calcularEixo,
 } from "../utils/formatters";
 
 const MedidasECG = ({ medidas, setMedidas }) => {
-  const [modoCalculo, setModoCalculo] = useState({
-    fc: false,
-    pr: false,
-    qrs: false,
-    qt: false,
-  });
-
   const [quadrados, setQuadrados] = useState({
     fc: "",
     pr: "",
     qrs: "",
     qt: "",
+    d1: "",
+    avf: "",
   });
-
-  const handleCalcularFC = (q) => {
-    const fc = calcularFC(q);
-    if (fc) {
-      setMedidas((prev) => ({ ...prev, fc: fc.toString() }));
-    }
-  };
-
-  const handleCalcularIntervalo = (q, campo) => {
-    const ms = calcularIntervalo(q);
-    if (ms) {
-      setMedidas((prev) => ({ ...prev, [campo]: ms.toString() }));
-    }
-  };
 
   // Calcular QTc automaticamente
   useEffect(() => {
@@ -59,49 +42,46 @@ const MedidasECG = ({ medidas, setMedidas }) => {
         Medidas do ECG
       </h2>
       <div className="measures-grid">
-        <MeasureField
+        <DualMeasureField
           label="FC"
           value={medidas.fc}
           onChange={(v) => setMedidas({ ...medidas, fc: v })}
           unit="bpm"
-          onCalculate={handleCalcularFC}
-          calculationMode={modoCalculo.fc}
-          setCalculationMode={(v) => setModoCalculo({ ...modoCalculo, fc: v })}
           quadrados={quadrados.fc}
-          setQuadrados={(v) => setQuadrados({ ...quadrados, fc: v })}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, fc: v })}
+          quadradosToValue={calcularFC}
+          valueToQuadrados={calcularQuadradosFC}
+          isFC={true}
         />
-        <MeasureField
-          label="PR"
+        <DualMeasureField
+          label="PRi"
           value={medidas.pr}
           onChange={(v) => setMedidas({ ...medidas, pr: v })}
           unit="ms"
-          onCalculate={(q) => handleCalcularIntervalo(q, "pr")}
-          calculationMode={modoCalculo.pr}
-          setCalculationMode={(v) => setModoCalculo({ ...modoCalculo, pr: v })}
           quadrados={quadrados.pr}
-          setQuadrados={(v) => setQuadrados({ ...quadrados, pr: v })}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, pr: v })}
+          quadradosToValue={calcularIntervalo}
+          valueToQuadrados={calcularQuadradosIntervalo}
         />
-        <MeasureField
+        <DualMeasureField
           label="QRS"
           value={medidas.qrs}
           onChange={(v) => setMedidas({ ...medidas, qrs: v })}
           unit="ms"
-          onCalculate={(q) => handleCalcularIntervalo(q, "qrs")}
-          calculationMode={modoCalculo.qrs}
-          setCalculationMode={(v) => setModoCalculo({ ...modoCalculo, qrs: v })}
           quadrados={quadrados.qrs}
-          setQuadrados={(v) => setQuadrados({ ...quadrados, qrs: v })}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, qrs: v })}
+          quadradosToValue={calcularIntervalo}
+          valueToQuadrados={calcularQuadradosIntervalo}
         />
-        <MeasureField
+        <DualMeasureField
           label="QT"
           value={medidas.qt}
           onChange={(v) => setMedidas({ ...medidas, qt: v })}
           unit="ms"
-          onCalculate={(q) => handleCalcularIntervalo(q, "qt")}
-          calculationMode={modoCalculo.qt}
-          setCalculationMode={(v) => setModoCalculo({ ...modoCalculo, qt: v })}
           quadrados={quadrados.qt}
-          setQuadrados={(v) => setQuadrados({ ...quadrados, qt: v })}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, qt: v })}
+          quadradosToValue={calcularIntervalo}
+          valueToQuadrados={calcularQuadradosIntervalo}
         />
         <div className="measure-field calculated-field">
           <label>
@@ -119,34 +99,28 @@ const MedidasECG = ({ medidas, setMedidas }) => {
           </div>
         </div>
 
-        {/* NOVOS CAMPOS: D1 e aVF */}
-        <div className="measure-field">
-          <label>D1</label>
-          <div className="measure-input-group">
-            <input
-              type="number"
-              value={medidas.d1}
-              onChange={(e) => setMedidas({ ...medidas, d1: e.target.value })}
-              placeholder="0"
-              step="0.1"
-            />
-            <span className="unit-label">mV</span>
-          </div>
-        </div>
+        {/* CAMPOS D1 e aVF com quadrados */}
+        <DualMeasureField
+          label="D1"
+          value={medidas.d1}
+          onChange={(v) => setMedidas({ ...medidas, d1: v })}
+          unit="mV"
+          quadrados={quadrados.d1}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, d1: v })}
+          quadradosToValue={(q) => (q ? parseFloat(q) : null)}
+          valueToQuadrados={(v) => (v ? parseFloat(v) : null)}
+        />
 
-        <div className="measure-field">
-          <label>aVF</label>
-          <div className="measure-input-group">
-            <input
-              type="number"
-              value={medidas.avf}
-              onChange={(e) => setMedidas({ ...medidas, avf: e.target.value })}
-              placeholder="0"
-              step="0.1"
-            />
-            <span className="unit-label">mV</span>
-          </div>
-        </div>
+        <DualMeasureField
+          label="aVF"
+          value={medidas.avf}
+          onChange={(v) => setMedidas({ ...medidas, avf: v })}
+          unit="mV"
+          quadrados={quadrados.avf}
+          onQuadradosChange={(v) => setQuadrados({ ...quadrados, avf: v })}
+          quadradosToValue={(q) => (q ? parseFloat(q) : null)}
+          valueToQuadrados={(v) => (v ? parseFloat(v) : null)}
+        />
 
         {/* EIXO CALCULADO AUTOMATICAMENTE */}
         <div className="measure-field calculated-field">
@@ -168,9 +142,8 @@ const MedidasECG = ({ medidas, setMedidas }) => {
       <div className="calc-info">
         <span className="info-icon">ℹ️</span>
         <span>
-          Clique em □ para calcular por quadrados pequenos. FC = 1500/quadrados.
-          Intervalos = quadrados × 40ms. Eixo calculado automaticamente via D1 e
-          aVF.
+          Preencha em quadrados (□) ou em unidade - a conversão é automática. FC
+          = 1500/□. Intervalos = □ × 40ms. Eixo calculado via D1 e aVF.
         </span>
       </div>
     </section>
