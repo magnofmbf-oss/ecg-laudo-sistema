@@ -2,20 +2,17 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// TODO: Substituir com as configurações do seu projeto Firebase
-// Acesse: https://console.firebase.google.com/
-// 1. Crie um novo projeto
-// 2. Vá em Project Settings > General
-// 3. Em "Your apps", adicione um Web App
-// 4. Copie as configurações abaixo
+// Configuração do Firebase usando variáveis de ambiente
+// As credenciais estão no arquivo .env (não versionado)
+// Para configurar um novo ambiente, copie .env.example para .env
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB8eFuWQho8c-niY6gjz0SgmbWjZnDABoQ",
-  authDomain: "ecg-laudo-sistema.firebaseapp.com",
-  projectId: "ecg-laudo-sistema",
-  storageBucket: "ecg-laudo-sistema.firebasestorage.app",
-  messagingSenderId: "1095849719744",
-  appId: "1:1095849719744:web:1bdab76fda2cfa62cdfa25",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Inicializar Firebase

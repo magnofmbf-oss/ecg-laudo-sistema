@@ -18,21 +18,29 @@ Este projeto usa Firebase para autenticação e armazenamento de dados. Siga os 
 4. Clique em **"Registrar app"**
 5. **COPIE** o objeto `firebaseConfig` que aparece
 
-## 3. Configurar o Arquivo firebase.js
+## 3. Configurar Variáveis de Ambiente
 
-1. Abra o arquivo: `src/config/firebase.js`
-2. Substitua as configurações com os valores copiados:
+1. **Copie o arquivo de exemplo:**
+   ```bash
+   cp .env.example .env
+   ```
+   (No Windows PowerShell: `Copy-Item .env.example .env`)
 
-```javascript
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY_AQUI",
-  authDomain: "seu-projeto.firebaseapp.com",
-  projectId: "seu-projeto-id",
-  storageBucket: "seu-projeto.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abc123def456",
-};
+2. **Edite o arquivo `.env`** e substitua com os valores copiados do Firebase:
+
+```bash
+VITE_FIREBASE_API_KEY=SUA_API_KEY_AQUI
+VITE_FIREBASE_AUTH_DOMAIN=seu-projeto.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=seu-projeto-id
+VITE_FIREBASE_STORAGE_BUCKET=seu-projeto.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=1:123456789:web:abc123def456
 ```
+
+**IMPORTANTE:** 
+- O arquivo `.env` está no `.gitignore` e NÃO será enviado para o GitHub
+- Nunca compartilhe suas credenciais do Firebase publicamente
+- Use `.env.example` como referência para novos ambientes
 
 ## 3.1. Configurar Emails Autorizados
 
