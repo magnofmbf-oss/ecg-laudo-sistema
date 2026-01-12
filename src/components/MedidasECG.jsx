@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Activity, Info, Square } from "lucide-react";
 import DualMeasureField from "./shared/DualMeasureField";
 import {
   calcularFC,
@@ -19,6 +20,21 @@ const MedidasECG = ({ medidas, setMedidas }) => {
     avf: "",
   });
 
+  // Limpar quadrados quando as medidas forem zeradas
+  useEffect(() => {
+    const todasVazias = Object.values(medidas).every((v) => v === "");
+    if (todasVazias) {
+      setQuadrados({
+        fc: "",
+        pr: "",
+        qrs: "",
+        qt: "",
+        d1: "",
+        avf: "",
+      });
+    }
+  }, [medidas]);
+
   // Calcular QTc automaticamente
   useEffect(() => {
     const qtc = calcularQTc(medidas.qt, medidas.fc);
@@ -38,7 +54,9 @@ const MedidasECG = ({ medidas, setMedidas }) => {
   return (
     <section className="card">
       <h2 className="card-title">
-        <span className="icon">📊</span>
+        <span className="icon">
+          <Activity size={20} />
+        </span>
         Medidas do ECG
       </h2>
       <div className="measures-grid">
@@ -140,10 +158,26 @@ const MedidasECG = ({ medidas, setMedidas }) => {
         </div>
       </div>
       <div className="calc-info">
-        <span className="info-icon">ℹ️</span>
+        <span className="info-icon">
+          <Info size={16} />
+        </span>
         <span>
-          Preencha em quadrados (□) ou em unidade - a conversão é automática. FC
-          = 1500/□. Intervalos = □ × 40ms. Eixo calculado via D1 e aVF.
+          Preencha em quadrados (
+          <Square
+            size={12}
+            style={{ display: "inline", verticalAlign: "middle" }}
+          />
+          ) ou em unidade - a conversão é automática. FC = 1500/
+          <Square
+            size={12}
+            style={{ display: "inline", verticalAlign: "middle" }}
+          />
+          . Intervalos ={" "}
+          <Square
+            size={12}
+            style={{ display: "inline", verticalAlign: "middle" }}
+          />{" "}
+          × 40ms. Eixo calculado via D1 e aVF.
         </span>
       </div>
     </section>

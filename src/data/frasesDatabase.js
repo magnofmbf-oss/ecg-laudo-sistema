@@ -1024,6 +1024,7 @@ export const frasesDatabase = {
     titulo: "Normal / Limítrofe",
     frases: [
       // Normal
+      "Ritmo sinusal. Dentro dos limites da normalidade.",
       "Eletrocardiograma normal",
       "Eletrocardiograma dentro dos limites da normalidade",
       "ECG normal",
@@ -1094,12 +1095,21 @@ export const frasesDatabase = {
       "Repetir ECG após suspensão de medicamento suspeito",
     ],
   },
+
+  // ==========================================================================
+  // FRASES PERSONALIZADAS
+  // ==========================================================================
+  personalizado: {
+    titulo: "Personalizado",
+    frases: [],
+  },
 };
 
 // ============================================================================
 // EXPORTAÇÃO DE CATEGORIAS ORDENADAS (para navegação no modal)
 // ============================================================================
 export const categoriasOrdenadas = [
+  "normalidade",
   "ritmo",
   "ondaP",
   "conducaoAV",
@@ -1120,8 +1130,8 @@ export const categoriasOrdenadas = [
   "dispositivos",
   "pediatrico",
   "artefatos",
-  "normalidade",
   "recomendacoes",
+  "personalizado",
 ];
 
 // ============================================================================

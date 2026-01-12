@@ -1,36 +1,40 @@
-import React, { useState } from 'react';
-import Header from './components/Header';
-import DadosPaciente from './components/DadosPaciente';
-import DadosMedico from './components/DadosMedico';
-import MedidasECG from './components/MedidasECG';
-import Conclusoes from './components/Conclusoes';
-import UploadImagem from './components/UploadImagem';
-import { gerarPDF } from './utils/pdfGenerator';
+import React, { useState } from "react";
+import { useAuth } from "./contexts/AuthContext";
+import Login from "./components/Login";
+import Header from "./components/Header";
+import DadosPaciente from "./components/DadosPaciente";
+import DadosMedico from "./components/DadosMedico";
+import MedidasECG from "./components/MedidasECG";
+import Conclusoes from "./components/Conclusoes";
+import UploadImagem from "./components/UploadImagem";
+import { gerarPDF } from "./utils/pdfGenerator";
 
 const App = () => {
+  const { user, loading } = useAuth();
+
   const [dadosPaciente, setDadosPaciente] = useState({
-    nome: '',
-    cpf: '',
-    dataNascimento: '',
-    idade: ''
+    nome: "",
+    cpf: "",
+    dataNascimento: "",
+    idade: "",
   });
 
   const [dadosMedico, setDadosMedico] = useState({
-    nome: 'Dr. Magno Fernandes Mendes Borges Filho',
-    especialidade: 'Médico Cardiologista',
-    crm: 'CRM MG 59040',
-    rqe: 'RQE 42417'
+    nome: "Dr. Magno Fernandes Mendes Borges Filho",
+    especialidade: "Médico Cardiologista",
+    crm: "CRM MG 59040",
+    rqe: "RQE 42417",
   });
 
   const [medidas, setMedidas] = useState({
-    fc: '',
-    pr: '',
-    qrs: '',
-    qt: '',
-    qtc: '',
-    d1: '',
-    avf: '',
-    eixo: ''
+    fc: "",
+    pr: "",
+    qrs: "",
+    qt: "",
+    qtc: "",
+    d1: "",
+    avf: "",
+    eixo: "",
   });
 
   const [conclusoes, setConclusoes] = useState([]);
@@ -39,11 +43,11 @@ const App = () => {
 
   const validarFormulario = () => {
     if (!dadosPaciente.nome.trim()) {
-      alert('O nome do paciente é obrigatório.');
+      alert("O nome do paciente é obrigatório.");
       return false;
     }
     if (conclusoes.length === 0) {
-      alert('Adicione pelo menos uma conclusão ao laudo.');
+      alert("Adicione pelo menos uma conclusão ao laudo.");
       return false;
     }
     return true;
@@ -51,32 +55,56 @@ const App = () => {
 
   const exportarPDF = async () => {
     if (!validarFormulario()) return;
-    
+
     setExportando(true);
-    
+
     try {
       await gerarPDF(dadosPaciente, dadosMedico, medidas, conclusoes, imagem);
     } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
-      alert('Erro ao gerar o PDF. Por favor, tente novamente.');
+      console.error("Erro ao gerar PDF:", error);
+      alert("Erro ao gerar o PDF. Por favor, tente novamente.");
     }
-    
+
     setExportando(false);
   };
 
   const limparFormulario = () => {
-    if (window.confirm('Deseja limpar todos os campos?')) {
-      setDadosPaciente({ nome: '', cpf: '', dataNascimento: '', idade: '' });
-      setMedidas({ fc: '', pr: '', qrs: '', qt: '', qtc: '', d1: '', avf: '', eixo: '' });
+    if (window.confirm("Deseja limpar todos os campos?")) {
+      setDadosPaciente({ nome: "", cpf: "", dataNascimento: "", idade: "" });
+      setMedidas({
+        fc: "",
+        pr: "",
+        qrs: "",
+        qt: "",
+        qtc: "",
+        d1: "",
+        avf: "",
+        eixo: "",
+      });
       setConclusoes([]);
       setImagem(null);
     }
   };
 
+  // Tela de carregamento
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  // Tela de login se não autenticado
+  if (!user) {
+    return <Login />;
+  }
+
   return (
     <div className="app">
       <Header />
-      
+
       <main className="main-content">
         <div className="form-container">
           <DadosPaciente dados={dadosPaciente} setDados={setDadosPaciente} />
@@ -84,17 +112,17 @@ const App = () => {
           <MedidasECG medidas={medidas} setMedidas={setMedidas} />
           <Conclusoes conclusoes={conclusoes} setConclusoes={setConclusoes} />
           <UploadImagem imagem={imagem} setImagem={setImagem} />
-          
+
           <div className="action-buttons">
             <button className="btn-secondary" onClick={limparFormulario}>
               Limpar
             </button>
-            <button 
-              className="btn-primary" 
+            <button
+              className="btn-primary"
               onClick={exportarPDF}
               disabled={exportando}
             >
-              {exportando ? 'Gerando.. .' : 'Exportar PDF'}
+              {exportando ? "Gerando.. ." : "Exportar PDF"}
             </button>
           </div>
         </div>

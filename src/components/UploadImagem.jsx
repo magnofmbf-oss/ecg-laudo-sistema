@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Image, FileText as FileIcon, Upload } from "lucide-react";
 
 const UploadImagem = ({ imagem, setImagem }) => {
   const fileInputRef = useRef(null);
@@ -42,7 +43,9 @@ const UploadImagem = ({ imagem, setImagem }) => {
   return (
     <section className="card">
       <h2 className="card-title">
-        <span className="icon">🖼️</span>
+        <span className="icon">
+          <Image size={20} />
+        </span>
         Imagem do ECG
       </h2>
 
@@ -56,7 +59,9 @@ const UploadImagem = ({ imagem, setImagem }) => {
           <div className="preview-container">
             {imagem.type === "application/pdf" ? (
               <div className="pdf-preview">
-                <span className="pdf-icon">📄</span>
+                <span className="pdf-icon">
+                  <FileIcon size={24} />
+                </span>
                 <span>{imagem.file.name}</span>
               </div>
             ) : (
@@ -74,7 +79,9 @@ const UploadImagem = ({ imagem, setImagem }) => {
           </div>
         ) : (
           <div className="upload-placeholder">
-            <span className="upload-icon">📤</span>
+            <span className="upload-icon">
+              <Upload size={32} />
+            </span>
             <span>Clique ou arraste para adicionar imagem</span>
             <span className="upload-formats">PDF, JPG, PNG, BMP</span>
           </div>
