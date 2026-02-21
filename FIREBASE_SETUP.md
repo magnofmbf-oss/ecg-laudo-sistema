@@ -21,9 +21,11 @@ Este projeto usa Firebase para autenticação e armazenamento de dados. Siga os 
 ## 3. Configurar Variáveis de Ambiente
 
 1. **Copie o arquivo de exemplo:**
+
    ```bash
    cp .env.example .env
    ```
+
    (No Windows PowerShell: `Copy-Item .env.example .env`)
 
 2. **Edite o arquivo `.env`** e substitua com os valores copiados do Firebase:
@@ -37,7 +39,8 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
 VITE_FIREBASE_APP_ID=1:123456789:web:abc123def456
 ```
 
-**IMPORTANTE:** 
+**IMPORTANTE:**
+
 - O arquivo `.env` está no `.gitignore` e NÃO será enviado para o GitHub
 - Nunca compartilhe suas credenciais do Firebase publicamente
 - Use `.env.example` como referência para novos ambientes

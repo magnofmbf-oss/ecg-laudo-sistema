@@ -5,9 +5,18 @@ import FrasesModal from "./FrasesModal";
 const Conclusoes = ({ conclusoes, setConclusoes }) => {
   const [modalAberto, setModalAberto] = useState(false);
 
-  const adicionarConclusao = (frase) => {
-    if (!conclusoes.includes(frase)) {
-      setConclusoes([...conclusoes, frase]);
+  const adicionarConclusao = (frases) => {
+    // Se for um array (vindo do FrasesModal), adiciona todas as frases que ainda não existem
+    if (Array.isArray(frases)) {
+      const novasFrases = frases.filter((frase) => !conclusoes.includes(frase));
+      if (novasFrases.length > 0) {
+        setConclusoes([...conclusoes, ...novasFrases]);
+      }
+    } else {
+      // Se for uma string única (fallback), adiciona se não existir
+      if (!conclusoes.includes(frases)) {
+        setConclusoes([...conclusoes, frases]);
+      }
     }
   };
 
@@ -39,7 +48,8 @@ const Conclusoes = ({ conclusoes, setConclusoes }) => {
       <div className="conclusoes-lista">
         {conclusoes.length === 0 ? (
           <p className="empty-state">
-            Nenhuma conclusão adicionada. Clique no botão abaixo para adicionar.{" "}
+            Nenhuma conclusão adicionada. Clique no botão abaixo para
+            adicionar.{" "}
           </p>
         ) : (
           conclusoes.map((conclusao, idx) => (

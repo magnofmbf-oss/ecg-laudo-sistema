@@ -9,11 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "firebase": "^12.7.0",
     "jspdf": "^2.5.1",
+    "konva": "^9.3.22",
     "lucide-react": "^0.562.0",
+    "pdfjs-dist": "^5.4.624",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^15.0.0",
+    "react-konva": "^18.2.10"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

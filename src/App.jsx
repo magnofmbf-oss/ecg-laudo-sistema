@@ -7,7 +7,9 @@ import DadosMedico from "./components/DadosMedico";
 import MedidasECG from "./components/MedidasECG";
 import Conclusoes from "./components/Conclusoes";
 import UploadImagem from "./components/UploadImagem";
+import CaliperModal from "./components/CaliperModal";
 import { gerarPDF } from "./utils/pdfGenerator";
+import { calcularIdade } from "./utils/formatters";
 
 const App = () => {
   const { user, loading } = useAuth();
@@ -40,6 +42,14 @@ const App = () => {
   const [conclusoes, setConclusoes] = useState([]);
   const [imagem, setImagem] = useState(null);
   const [exportando, setExportando] = useState(false);
+  const [isCaliperOpen, setIsCaliperOpen] = useState(false);
+
+  const handleApplyMeasures = (newMeasures) => {
+    setMedidas((prev) => ({
+      ...prev,
+      ...newMeasures,
+    }));
+  };
 
   const validarFormulario = () => {
     if (!dadosPaciente.nome.trim()) {
@@ -86,6 +96,26 @@ const App = () => {
     }
   };
 
+  const handleExtractData = React.useCallback((dados) => {
+    setDadosPaciente((prev) => {
+      const novaDataNascimento = dados.dataNascimento || prev.dataNascimento;
+
+      // Se a IA não retornou a idade, mas retornou a data de nascimento, calculamos a idade
+      let novaIdade = dados.idade || prev.idade;
+      if (!dados.idade && novaDataNascimento) {
+        novaIdade = calcularIdade(novaDataNascimento).toString();
+      }
+
+      return {
+        ...prev,
+        nome: dados.nome || prev.nome,
+        cpf: dados.cpf || prev.cpf,
+        dataNascimento: novaDataNascimento,
+        idade: novaIdade,
+      };
+    });
+  }, []);
+
   // Tela de carregamento
   if (loading) {
     return (
@@ -111,9 +141,8 @@ const App = () => {
           <DadosMedico dados={dadosMedico} setDados={setDadosMedico} />
           <MedidasECG medidas={medidas} setMedidas={setMedidas} />
           <Conclusoes conclusoes={conclusoes} setConclusoes={setConclusoes} />
-          <UploadImagem imagem={imagem} setImagem={setImagem} />
 
-          <div className="action-buttons">
+          <div className="action-buttons" style={{ marginBottom: "24px" }}>
             <button className="btn-secondary" onClick={limparFormulario}>
               Limpar
             </button>
@@ -122,11 +151,25 @@ const App = () => {
               onClick={exportarPDF}
               disabled={exportando}
             >
-              {exportando ? "Gerando.. ." : "Exportar PDF"}
+              {exportando ? "Gerando..." : "Exportar PDF"}
             </button>
           </div>
+
+          <UploadImagem
+            imagem={imagem}
+            setImagem={setImagem}
+            onOpenCaliper={() => setIsCaliperOpen(true)}
+            onExtractData={handleExtractData}
+          />
         </div>
       </main>
+
+      <CaliperModal
+        isOpen={isCaliperOpen}
+        onClose={() => setIsCaliperOpen(false)}
+        imagem={imagem}
+        onApplyMeasures={handleApplyMeasures}
+      />
     </div>
   );
 };
